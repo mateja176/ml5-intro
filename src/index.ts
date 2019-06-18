@@ -1,3 +1,20 @@
 import * as ml5 from 'ml5';
 
-console.log(ml5.version)
+const images = Array.from(document.querySelectorAll('img'));
+
+const gotResult = (
+  error: Error,
+  results: { label: string; confidence: number }[],
+) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log(results);
+  }
+};
+
+(async () => {
+  const classifier = await ml5.imageClassifier('MobileNet');
+
+  images.forEach(image => classifier.classify(image, gotResult));
+})();
